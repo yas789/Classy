@@ -253,3 +253,9 @@ GET /auth/me with Authorization: Bearer <token>
 ## Current Status
 
 Initial auth and shell boilerplate exists. The marking workflow has not been implemented yet.
+
+## Branching and CI
+
+Development uses `dev` as the integration branch and `main` as the future deployment branch. CI runs frontend and backend checks for pull requests and pushes to both branches.
+
+See `docs/branching-and-ci.md` for branch rules and workflow details.
