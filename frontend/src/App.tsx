@@ -14,13 +14,20 @@ export function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         element={
           <ProtectedRoute>
             <AppLayout />
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<HomePage />} />
         <Route path="/classes" element={<ClassesPage />} />
         <Route path="/assessments" element={<AssessmentsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
