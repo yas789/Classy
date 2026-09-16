@@ -1,24 +1,18 @@
 import { FormEvent, useState } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
 import { AuthLayout } from "../layouts/AuthLayout";
 
-type LocationState = {
-  from?: { pathname?: string };
-};
-
-export function LoginPage() {
+export function RegisterPage() {
   const { isLoading, session, signIn } = useAuth();
-  const location = useLocation();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const from = (location.state as LocationState | null)?.from?.pathname ?? "/";
-
   if (!isLoading && session) {
-    return <Navigate to={from} replace />;
+    return <Navigate to="/" replace />;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -27,9 +21,13 @@ export function LoginPage() {
     setIsSubmitting(true);
 
     try {
+      if (!name.trim()) {
+        throw new Error("Your name is required.");
+      }
+
       await signIn(email, password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to sign in.");
+      setError(err instanceof Error ? err.message : "Unable to register.");
     } finally {
       setIsSubmitting(false);
     }
@@ -38,11 +36,11 @@ export function LoginPage() {
   return (
     <AuthLayout>
       <div className="mb-7">
-        <h2 className="text-2xl font-semibold tracking-tight text-[#0b1c30]">Sign in to Classy</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-[#0b1c30]">Create your Classy account</h2>
         <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-          <span>Do not have an account?</span>
-          <Link className="font-medium text-[#4648d4] hover:underline" to="/register">
-            Register
+          <span>Already registered?</span>
+          <Link className="font-medium text-[#4648d4] hover:underline" to="/login">
+            Sign in
           </Link>
         </div>
       </div>
@@ -88,13 +86,28 @@ export function LoginPage() {
 
       <div className="relative mb-6 flex items-center justify-center">
         <div className="w-full border-t border-slate-200" />
-        <span className="absolute bg-white px-3 text-xs text-slate-400">or institutional email</span>
+        <span className="absolute bg-white px-3 text-xs text-slate-400">or create with email</span>
       </div>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
+          <label className="mb-1.5 block text-xs font-medium text-slate-700" htmlFor="name">
+            Full name
+          </label>
+          <input
+            className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#4648d4] focus:ring-1 focus:ring-[#4648d4]"
+            id="name"
+            placeholder="Alex Teacher"
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
+        </div>
+
+        <div>
           <label className="mb-1.5 block text-xs font-medium text-slate-700" htmlFor="email">
-            Email address
+            Institutional email
           </label>
           <input
             className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#4648d4] focus:ring-1 focus:ring-[#4648d4]"
@@ -108,14 +121,9 @@ export function LoginPage() {
         </div>
 
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <label className="block text-xs font-medium text-slate-700" htmlFor="password">
-              Password
-            </label>
-            <button className="text-xs text-[#4648d4] hover:underline" type="button">
-              Forgot password?
-            </button>
-          </div>
+          <label className="mb-1.5 block text-xs font-medium text-slate-700" htmlFor="password">
+            Password
+          </label>
           <input
             className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#4648d4] focus:ring-1 focus:ring-[#4648d4]"
             id="password"
@@ -127,9 +135,11 @@ export function LoginPage() {
           />
         </div>
 
-        <label className="flex cursor-pointer select-none items-center gap-2 pt-1">
-          <input className="h-4 w-4 rounded border-slate-300 text-[#4648d4] focus:ring-[#4648d4]/20" type="checkbox" />
-          <span className="text-xs text-slate-600">Remember me</span>
+        <label className="flex cursor-pointer select-none items-start gap-2 pt-1">
+          <input className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#4648d4] focus:ring-[#4648d4]/20" required type="checkbox" />
+          <span className="text-xs leading-5 text-slate-600">
+            I agree to use Classy for teacher-reviewed assessment workflows.
+          </span>
         </label>
 
         {error ? <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p> : null}
@@ -139,7 +149,7 @@ export function LoginPage() {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Signing in..." : "Sign in"}
+          {isSubmitting ? "Creating account..." : "Create account"}
         </button>
       </form>
     </AuthLayout>
