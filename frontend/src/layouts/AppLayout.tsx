@@ -1,13 +1,24 @@
 import { NavLink, Outlet } from "react-router-dom";
+import {
+  Bell,
+  ChartNoAxesColumnIncreasing,
+  CircleHelp,
+  CirclePlus,
+  ClipboardList,
+  GraduationCap,
+  Home,
+  Settings,
+  UsersRound,
+} from "lucide-react";
 import { useAuth } from "../features/auth/useAuth";
 import { mockAssessments, mockTeacher } from "../features/mock/mockData";
 
 const navItems = [
-  { to: "/", label: "Home", icon: "⌂" },
-  { to: "/classes", label: "Classes", icon: "▦" },
-  { to: "/assessments", label: "Assessments", icon: "□", count: mockAssessments.length },
-  { to: "/results", label: "Results", icon: "▥" },
-  { to: "/settings", label: "Settings", icon: "⚙" },
+  { to: "/", label: "Home", icon: Home },
+  { to: "/classes", label: "Classes", icon: UsersRound },
+  { to: "/assessments", label: "Assessments", icon: ClipboardList, count: mockAssessments.length },
+  { to: "/results", label: "Results", icon: ChartNoAxesColumnIncreasing },
+  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function AppLayout() {
@@ -19,7 +30,7 @@ export function AppLayout() {
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-3 px-1 pt-1">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6063ee] text-white shadow-sm">
-              <span className="text-lg leading-none">▣</span>
+              <GraduationCap className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-semibold leading-none tracking-tight text-white">Classy</span>
@@ -28,30 +39,32 @@ export function AppLayout() {
           </div>
 
           <nav className="flex flex-col gap-1.5 pt-2">
-            {navItems.map((item) => (
-              <NavLink
-                className={({ isActive }) =>
-                  `flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors active:scale-[0.99] ${
-                    isActive
-                      ? "bg-[#4648d4] text-white"
-                      : "text-[#c7c5d5] hover:bg-[#464553]/40 hover:text-white"
-                  }`
-                }
-                end={item.to === "/"}
-                key={item.to}
-                to={item.to}
-              >
-                <span className="mr-3 text-[18px] leading-none" aria-hidden="true">
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-                {item.count ? (
-                  <span className="ml-auto rounded bg-[#464553]/50 px-1.5 py-0.5 font-mono text-[10px] text-[#c7c5d5]">
-                    {item.count}
-                  </span>
-                ) : null}
-              </NavLink>
-            ))}
+            {navItems.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <NavLink
+                  className={({ isActive }) =>
+                    `flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors active:scale-[0.99] ${
+                      isActive
+                        ? "bg-[#4648d4] text-white shadow-sm"
+                        : "text-[#c7c5d5] hover:bg-[#464553]/40 hover:text-white"
+                    }`
+                  }
+                  end={item.to === "/"}
+                  key={item.to}
+                  to={item.to}
+                >
+                  <Icon className="mr-3 h-4 w-4" aria-hidden="true" />
+                  <span>{item.label}</span>
+                  {item.count ? (
+                    <span className="ml-auto rounded bg-[#464553]/50 px-1.5 py-0.5 font-mono text-[10px] text-[#c7c5d5]">
+                      {item.count}
+                    </span>
+                  ) : null}
+                </NavLink>
+              );
+            })}
           </nav>
 
           <div className="px-1 pt-1">
@@ -59,7 +72,7 @@ export function AppLayout() {
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-[#464553]/60 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-[#464553] active:scale-[0.98]"
               to="/assessments"
             >
-              <span aria-hidden="true">＋</span>
+              <CirclePlus className="h-4 w-4" aria-hidden="true" />
               <span>New Marking Batch</span>
             </NavLink>
           </div>
@@ -112,11 +125,12 @@ export function AppLayout() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] sm:flex" type="button">
-              <span aria-hidden="true">◌</span>
+            <button className="relative hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4648d4]/30 sm:flex" type="button" aria-label="Notifications">
+              <Bell className="h-4 w-4" aria-hidden="true" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#4648d4] ring-2 ring-white" />
             </button>
-            <button className="hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] sm:flex" type="button">
-              <span aria-hidden="true">?</span>
+            <button className="hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4648d4]/30 sm:flex" type="button" aria-label="Help and documentation">
+              <CircleHelp className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="hidden h-5 w-px bg-[#c7c4d7]/40 sm:block" />
             <div className="flex items-center gap-2">
