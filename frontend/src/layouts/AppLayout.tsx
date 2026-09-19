@@ -1,72 +1,134 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
+import { mockAssessments, mockTeacher } from "../features/mock/mockData";
 
 const navItems = [
-  { to: "/", label: "Home" },
-  { to: "/classes", label: "Classes" },
-  { to: "/assessments", label: "Assessments" },
-  { to: "/settings", label: "Settings" },
+  { to: "/", label: "Home", icon: "⌂" },
+  { to: "/classes", label: "Classes", icon: "▦" },
+  { to: "/assessments", label: "Assessments", icon: "□", count: mockAssessments.length },
+  { to: "/results", label: "Results", icon: "▥" },
+  { to: "/settings", label: "Settings", icon: "⚙" },
 ];
 
 export function AppLayout() {
   const { user, signOut } = useAuth();
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-slate-200 bg-white p-6 md:block">
-        <div className="mb-10">
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-blue-600">Classy</p>
-          <h1 className="mt-2 text-xl font-semibold">Teacher workspace</h1>
-        </div>
-        <nav className="space-y-2">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `block rounded-xl px-4 py-3 text-sm font-medium ${
-                  isActive ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-100"
-                }`
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
-
-      <div className="md:pl-64">
-        <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 px-5 py-4 backdrop-blur md:px-8">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-medium text-slate-500">Signed in as</p>
-              <p className="font-semibold">{user?.email}</p>
+    <div className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased selection:bg-[#e1e0ff] selection:text-[#07006c]">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col justify-between border-r border-[#c7c4d7]/20 bg-[#1a1a27] p-4 text-white lg:flex">
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-3 px-1 pt-1">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6063ee] text-white shadow-sm">
+              <span className="text-lg leading-none">▣</span>
             </div>
-            <button
-              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-              type="button"
-              onClick={() => void signOut()}
-            >
-              Log out
-            </button>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold leading-none tracking-tight text-white">Classy</span>
+              <span className="mt-1 text-[11px] font-medium text-[#c7c5d5]">AI Exam Marking</span>
+            </div>
           </div>
-          <nav className="mt-4 flex gap-2 overflow-x-auto md:hidden">
+
+          <nav className="flex flex-col gap-1.5 pt-2">
             {navItems.map((item) => (
               <NavLink
-                key={item.to}
-                to={item.to}
                 className={({ isActive }) =>
-                  `rounded-full px-4 py-2 text-sm font-medium ${
-                    isActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"
+                  `flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors active:scale-[0.99] ${
+                    isActive
+                      ? "bg-[#4648d4] text-white"
+                      : "text-[#c7c5d5] hover:bg-[#464553]/40 hover:text-white"
                   }`
                 }
+                end={item.to === "/"}
+                key={item.to}
+                to={item.to}
               >
-                {item.label}
+                <span className="mr-3 text-[18px] leading-none" aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span>{item.label}</span>
+                {item.count ? (
+                  <span className="ml-auto rounded bg-[#464553]/50 px-1.5 py-0.5 font-mono text-[10px] text-[#c7c5d5]">
+                    {item.count}
+                  </span>
+                ) : null}
               </NavLink>
             ))}
           </nav>
+
+          <div className="px-1 pt-1">
+            <NavLink
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-[#464553]/60 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-[#464553] active:scale-[0.98]"
+              to="/assessments"
+            >
+              <span aria-hidden="true">＋</span>
+              <span>New Marking Batch</span>
+            </NavLink>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-[#c7c4d7]/20 pt-4">
+          <div className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-[#464553]/30">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#6063ee] text-sm font-semibold text-white">
+              {mockTeacher.initials}
+            </div>
+            <div className="flex min-w-0 flex-col">
+              <span className="truncate text-sm font-medium text-white">{mockTeacher.name}</span>
+              <span className="truncate text-xs text-[#c7c5d5]">{mockTeacher.institution}</span>
+            </div>
+          </div>
+          <button
+            className="rounded-lg px-2 py-1.5 text-left text-xs font-medium text-[#c7c5d5] transition-colors hover:bg-[#464553]/30 hover:text-white"
+            type="button"
+            onClick={() => void signOut()}
+          >
+            Log out {user?.email ? `(${user.email})` : ""}
+          </button>
+        </div>
+      </aside>
+
+      <div className="lg:pl-60">
+        <header className="sticky top-0 z-30 flex min-h-16 items-center justify-between border-b border-[#e5e7eb] bg-white px-4 py-3 lg:px-8">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 truncate text-[11px] font-medium text-[#464554]">
+              <span className="hidden hover:text-[#0b1c30] sm:inline">{mockTeacher.institution}</span>
+              <span className="hidden text-[#c7c4d7] sm:inline">/</span>
+              <span className="truncate font-semibold text-[#0b1c30]">Teacher workspace</span>
+            </div>
+            <nav className="mt-3 flex gap-2 overflow-x-auto lg:hidden">
+              {navItems.map((item) => (
+                <NavLink
+                  className={({ isActive }) =>
+                    `shrink-0 rounded-full px-3 py-1.5 text-xs font-medium ${
+                      isActive ? "bg-[#4648d4] text-white" : "bg-[#eff4ff] text-[#464554]"
+                    }`
+                  }
+                  end={item.to === "/"}
+                  key={item.to}
+                  to={item.to}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button className="hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] sm:flex" type="button">
+              <span aria-hidden="true">◌</span>
+            </button>
+            <button className="hidden h-9 w-9 items-center justify-center rounded-lg text-[#5e5d6b] transition-colors hover:bg-[#eff4ff] sm:flex" type="button">
+              <span aria-hidden="true">?</span>
+            </button>
+            <div className="hidden h-5 w-px bg-[#c7c4d7]/40 sm:block" />
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#e3e0f2] font-mono text-xs font-semibold text-[#464553]">
+                {mockTeacher.initials}
+              </div>
+              <span className="hidden text-xs font-medium text-[#0b1c30] sm:inline-block">{mockTeacher.name}</span>
+            </div>
+          </div>
         </header>
-        <main className="px-5 py-8 md:px-8">
+
+        <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
       </div>
