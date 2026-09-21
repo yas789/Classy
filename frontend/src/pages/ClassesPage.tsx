@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useBatchDialog } from "../features/forms/batch-dialog-context";
 import { getAssessmentsForClass, mockClasses } from "../features/mock/mockData";
 
 export function ClassesPage() {
+  const { openBatchDialog } = useBatchDialog();
+
   return (
     <section className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -9,7 +12,7 @@ export function ClassesPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-[#0b1c30]">Classes</h1>
           <p className="mt-1 text-sm text-[#464554]">Choose a cohort to inspect students, assessments, and review progress.</p>
         </div>
-        <button className="w-fit rounded-lg bg-[#4648d4] px-4 py-2 text-sm font-medium text-white shadow-sm" type="button">
+        <button className="w-fit rounded-lg bg-[#4648d4] px-4 py-2 text-sm font-medium text-white shadow-sm" type="button" onClick={() => openBatchDialog("class")}>
           Create class
         </button>
       </div>
