@@ -20,12 +20,35 @@ export type MockAnswer = {
   studentId: string;
   segmentationConfidence: number;
   interpretationConfirmed: boolean;
+  segmentationConfirmed?: boolean;
   markConfirmed: boolean;
   proposedMark: number;
   maxMark: number;
   overrideMark?: number;
   interpretedAnswer: string[];
   explanation: string[];
+  paperSections?: MockPaperSection[];
+  markingBreakdown?: MockMarkingDecision[];
+};
+
+export type MockPaperSection = {
+  id: string;
+  question: string;
+  topic: string;
+  page: number;
+  confidence: number;
+  bounds: string;
+  text: string;
+};
+
+export type MockMarkingDecision = {
+  id: string;
+  question: string;
+  awarded: number;
+  max: number;
+  evidenceSectionId: string;
+  rubricPoint: string;
+  rationale: string;
 };
 
 export type MockAssessment = {
@@ -114,6 +137,7 @@ export const mockAssessments: MockAssessment[] = [
         markConfirmed: false,
         proposedMark: 3,
         maxMark: 3,
+        segmentationConfirmed: false,
         interpretedAnswer: [
           "[1] When the temperature is higher, particles move faster and have more kinetic energy.",
           "[2] They collide more often because they are moving around more quickly.",
@@ -123,6 +147,118 @@ export const mockAssessments: MockAssessment[] = [
           "Reference [1] matches the kinetic energy marking point.",
           "Reference [2] matches the collision frequency marking point.",
           "Reference [3] matches the activation energy marking point.",
+        ],
+        paperSections: [
+          {
+            id: "q1-1",
+            question: "Question 1.1",
+            topic: "Cells and Organelles",
+            page: 1,
+            confidence: 98,
+            bounds: "p1 x120 y184 w640 h92",
+            text: "The nucleus contains genetic material (DNA) which controls cellular activities and codes for protein synthesis during transcription.",
+          },
+          {
+            id: "q2-4",
+            question: "Question 2.4",
+            topic: "Enzymes and Substrates",
+            page: 1,
+            confidence: 96,
+            bounds: "p1 x116 y344 w660 h106",
+            text: "At higher temperatures, enzyme active sites denature due to excessive kinetic energy disrupting hydrogen bonds holding the tertiary structure.",
+          },
+          {
+            id: "q3-2",
+            question: "Question 3.2",
+            topic: "Osmosis and Water Potential",
+            page: 2,
+            confidence: 94,
+            bounds: "p2 x118 y130 w682 h156",
+            text: "Water passes from a higher water potential to a lower water potential through tiny microscopic pores in the membrane. This process is passive because it does not require chemical energy (ATP) to take place down the concentration gradient.",
+          },
+          {
+            id: "q4-1",
+            question: "Question 4.1",
+            topic: "Mitosis and Cell Cycle",
+            page: 2,
+            confidence: 97,
+            bounds: "p2 x112 y408 w648 h96",
+            text: "During metaphase, chromosomes align along the equatorial plate and spindle fibers attach firmly to the centromere regions.",
+          },
+          {
+            id: "q5-3",
+            question: "Question 5.3",
+            topic: "Gas Exchange Surfaces",
+            page: 3,
+            confidence: 95,
+            bounds: "p3 x124 y188 w654 h118",
+            text: "Alveoli provide a large surface area with a very short diffusion distance, maintained by continuous capillary blood flow and ventilation.",
+          },
+          {
+            id: "q6-2",
+            question: "Question 6.2",
+            topic: "Circulatory Systems",
+            page: 3,
+            confidence: 93,
+            bounds: "p3 x120 y374 w650 h104",
+            text: "Double circulation ensures high pressure is maintained to body tissues while lower pressure protects delicate pulmonary capillary networks.",
+          },
+          {
+            id: "q7-1",
+            question: "Question 7.1",
+            topic: "Plant Transport",
+            page: 4,
+            confidence: 97,
+            bounds: "p4 x118 y156 w664 h106",
+            text: "Transpiration pull creates a negative pressure tension in xylem vessels, drawing continuous columns of water upwards from roots.",
+          },
+          {
+            id: "q8-3",
+            question: "Question 8.3",
+            topic: "Immunology and Pathogens",
+            page: 4,
+            confidence: 96,
+            bounds: "p4 x116 y346 w676 h124",
+            text: "Phagocytes engulf pathogens into a vacuole called a phagosome, which then fuses with lysosomes containing hydrolytic enzymes to destroy invaders.",
+          },
+        ],
+        markingBreakdown: [
+          {
+            id: "m1",
+            question: "Question 1.1",
+            awarded: 2,
+            max: 2,
+            evidenceSectionId: "q1-1",
+            rubricPoint: "Identifies nucleus as containing DNA and controlling cell activity.",
+            rationale: "The interpreted answer explicitly states DNA is in the nucleus and links it to cellular control.",
+          },
+          {
+            id: "m2",
+            question: "Question 2.4",
+            awarded: 2,
+            max: 3,
+            evidenceSectionId: "q2-4",
+            rubricPoint: "Explains denaturation using active site shape and bond disruption.",
+            rationale: "The answer names denaturation and hydrogen bond disruption, but does not clearly state substrate fit is lost.",
+          },
+          {
+            id: "m3",
+            question: "Question 3.2",
+            awarded: 3,
+            max: 3,
+            evidenceSectionId: "q3-2",
+            rubricPoint: "Defines osmosis direction, membrane route, and passive movement.",
+            rationale: "The response covers water potential direction, membrane passage, and lack of ATP requirement.",
+          },
+          {
+            id: "m4",
+            question: "Question 4.1",
+            awarded: 2,
+            max: 2,
+            evidenceSectionId: "q4-1",
+            rubricPoint: "Describes metaphase chromosome alignment and spindle attachment.",
+            rationale: "Both required metaphase features are present in the segmented answer.",
+          },
         ],
       },
       {
