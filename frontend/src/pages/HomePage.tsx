@@ -4,6 +4,7 @@ import { MetricCard } from "@/components/app/MetricCard";
 import { PageHeader } from "@/components/app/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { useBatchDialog } from "../features/forms/batch-dialog-context";
 import { mockAssessments, mockTeacher } from "../features/mock/mockData";
 
 const activeAssessment = mockAssessments[0];
@@ -15,19 +16,22 @@ function StatusBadge({ label }: { label: string }) {
 }
 
 export function HomePage() {
+  const { openBatchDialog } = useBatchDialog();
+
   return (
     <>
       <PageHeader
         title="Good morning, Maya"
         description={`AI has marked 94% of this week's answers. ${activeAssessment.needsReview} need your judgement.`}
         action={
-          <Link
+          <button
             className="flex h-9 w-fit items-center gap-1.5 rounded-lg bg-[#4648d4] px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-[#6063ee] active:scale-[0.98]"
-            to="/classes"
+            type="button"
+            onClick={() => openBatchDialog("class")}
           >
             <CirclePlus className="h-4 w-4" aria-hidden="true" />
             <span>Create class</span>
-          </Link>
+          </button>
         }
       />
 

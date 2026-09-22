@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import {
   Bell,
@@ -11,6 +12,8 @@ import {
   UsersRound,
 } from "lucide-react";
 import { useAuth } from "../features/auth/useAuth";
+import { MarkingBatchDialog } from "../features/forms/MarkingBatchDialog";
+import { type MarkingBatchStep } from "../features/forms/batch-dialog-context";
 import { mockAssessments, mockTeacher } from "../features/mock/mockData";
 
 const navItems = [
@@ -23,6 +26,13 @@ const navItems = [
 
 export function AppLayout() {
   const { user, signOut } = useAuth();
+  const [isBatchDialogOpen, setIsBatchDialogOpen] = useState(false);
+  const [batchDialogInitialStep, setBatchDialogInitialStep] = useState<MarkingBatchStep>("class");
+
+  function openBatchDialog(step: MarkingBatchStep = "class") {
+    setBatchDialogInitialStep(step);
+    setIsBatchDialogOpen(true);
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] font-sans text-[#0b1c30] antialiased selection:bg-[#e1e0ff] selection:text-[#07006c]">
@@ -68,13 +78,14 @@ export function AppLayout() {
           </nav>
 
           <div className="px-1 pt-1">
-            <NavLink
+            <button
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-[#464553]/60 px-3 py-2 text-sm font-medium text-white transition-all hover:bg-[#464553] active:scale-[0.98]"
-              to="/assessments"
+              type="button"
+              onClick={() => openBatchDialog("class")}
             >
               <CirclePlus className="h-4 w-4" aria-hidden="true" />
               <span>New Marking Batch</span>
-            </NavLink>
+            </button>
           </div>
         </div>
 
@@ -143,9 +154,10 @@ export function AppLayout() {
         </header>
 
         <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col gap-6 px-4 py-6 lg:px-8 lg:py-8">
-          <Outlet />
+          <Outlet context={{ openBatchDialog }} />
         </main>
       </div>
+      <MarkingBatchDialog open={isBatchDialogOpen} initialStep={batchDialogInitialStep} onOpenChange={setIsBatchDialogOpen} />
     </div>
   );
 }
