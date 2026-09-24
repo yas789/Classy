@@ -2,7 +2,7 @@
 
 ## Summary
 
-Classy is an AI-assisted exam marking platform for teachers. It helps teachers process handwritten student papers by splitting the workflow into reviewable stages: segmentation, interpretation, and marking.
+Classy is an AI-assisted exam marking platform for teachers. It helps teachers process handwritten student papers by splitting the workflow into reviewable stages: interpretation, segmentation, and marking.
 
 The MVP should prove that the teacher review experience is useful before investing in real AI integrations.
 
@@ -16,7 +16,7 @@ Handwritten exam marking is slow, repetitive, and mentally draining. Teachers of
 
 ## Proposed Solution
 
-Classy provides a structured assessment workspace where teachers upload papers and mark schemes, review AI-generated segmentation and interpretation, then confirm or override proposed marks.
+Classy provides a structured assessment workspace where teachers upload papers and mark schemes, review AI-generated interpretation and segmentation, then confirm or override proposed marks.
 
 The product should make the AI's reasoning inspectable. A teacher should be able to see which parts of a student's answer support each awarded mark.
 
@@ -27,10 +27,10 @@ Create class
   -> create assessment
   -> upload question paper and mark scheme
   -> upload or scan student papers
-  -> AI segmentation
-  -> teacher confirms segmentation
   -> AI interpretation
   -> teacher confirms interpretation
+  -> AI segmentation
+  -> teacher confirms segmentation
   -> AI marking
   -> teacher confirms or overrides mark
   -> results/export
@@ -60,7 +60,17 @@ Assessment -> Student A -> Question 1 -> Question 2 -> Question 3
 
 ## Marking Workflow
 
-### 1. Segmentation
+### 1. Interpretation
+
+The system converts the handwritten paper into structured text and assigns numbered references to important parts of the response.
+
+Teacher needs:
+
+- Compare interpreted text against the scanned answer.
+- See numbered references such as `[1]`, `[2]`, `[3]`.
+- Confirm or override the interpretation before segmentation and marking continue.
+
+### 2. Segmentation
 
 The system identifies relevant answer regions from a handwritten paper.
 
@@ -69,16 +79,6 @@ Teacher needs:
 - See the detected region.
 - See confidence.
 - Confirm the region or flag it for correction.
-
-### 2. Interpretation
-
-The system converts the handwritten answer into structured text and assigns numbered references to important parts of the response.
-
-Teacher needs:
-
-- Compare interpreted text against the scanned answer.
-- See numbered references such as `[1]`, `[2]`, `[3]`.
-- Confirm or override the interpretation before marking is available.
 
 ### 3. Marking
 

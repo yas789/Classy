@@ -21,8 +21,8 @@ Create class
   -> create assessment
   -> upload question paper + mark scheme
   -> upload or scan student papers
-  -> AI segmentation
   -> AI interpretation
+  -> AI segmentation
   -> AI marking
   -> teacher review and confirmation
   -> results/export
@@ -37,8 +37,8 @@ Teachers should be able to review assessments in two modes:
 
 The marking workflow is intentionally staged so teachers can inspect the AI's work before marks are proposed.
 
-1. `Segmentation`: identify the relevant handwritten answer/question regions on the student paper.
-2. `Interpretation`: digitise the handwritten answer and create numbered references to important answer sections.
+1. `Interpretation`: digitise the full handwritten paper and create editable text for teacher review.
+2. `Segmentation`: identify the relevant answer/question regions using the approved interpretation as context.
 3. `Marking`: use the numbered references and mark scheme to explain exactly why marks were awarded.
 
 Marking must remain locked until segmentation and interpretation have been confirmed.
@@ -95,7 +95,7 @@ Initial pages/routes:
 
 The marking workspace should include:
 
-- `Segmentation -> Interpretation -> Marking` stage UI
+- `Interpretation -> Segmentation -> Marking` stage UI
 - `By Question / By Student` segmented control
 - Previous/next navigation
 - Confidence indicators
@@ -129,8 +129,8 @@ POST   /classes
 GET    /assessments
 POST   /assessments
 GET    /assessments/{id}
-POST   /answers/{id}/segment
 POST   /answers/{id}/interpret
+POST   /answers/{id}/segment
 POST   /answers/{id}/mark
 PATCH  /answers/{id}/confirm
 ```
@@ -252,7 +252,9 @@ GET /auth/me with Authorization: Bearer <token>
 
 ## Current Status
 
-Initial auth and shell boilerplate exists. The marking workflow has not been implemented yet.
+The frontend shell, mock auth, class and assessment pages, marking batch form, and interpretation-first marking workspace are implemented with local mock data. The FastAPI backend provides health, auth identity validation, and mock class/assessment/answer workflow endpoints so the frontend can move behind an API interface without adding real AI or Supabase yet.
+
+Generated artifacts such as `node_modules`, `dist`, `.venv`, Python bytecode caches, TypeScript build info, and `.DS_Store` are ignored and should be recreated locally rather than committed.
 
 ## Branching and CI
 

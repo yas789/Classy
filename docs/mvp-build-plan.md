@@ -44,7 +44,7 @@ Expected output:
 
 - Add `By Question / By Student` segmented control.
 - Add previous/next navigation.
-- Add staged workflow: Segmentation, Interpretation, Marking.
+- Add staged workflow: Interpretation, Segmentation, Marking.
 - Lock Marking until Interpretation is confirmed.
 - Show confidence indicators.
 - Show numbered interpretation references.

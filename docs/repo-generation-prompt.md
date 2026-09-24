@@ -7,14 +7,14 @@ Build the initial GitHub repository for an MVP called Classy, an AI-assisted exa
 
 The core workflow is:
 
-Create class -> create assessment -> upload question paper + mark scheme -> upload/scan student papers -> AI segmentation -> AI interpretation -> AI marking -> teacher review/confirmation -> results/export.
+Create class -> create assessment -> upload question paper + mark scheme -> upload/scan student papers -> AI interpretation -> AI segmentation -> AI marking -> teacher review/confirmation -> results/export.
 
 Teachers can review assessments either By Question, meaning the same question across all students, or By Student, meaning the entire paper for one student.
 
 The marking workflow has 3 stages:
 
-1. Segmentation: identify the relevant handwritten answer/question regions.
-2. Interpretation: digitise the student's handwritten answer and create numbered references to important sections.
+1. Interpretation: digitise the student's handwritten answer and create numbered references to important sections.
+2. Segmentation: identify the relevant handwritten answer/question regions.
 3. Marking: use those references and the mark scheme to explain exactly why marks were awarded.
 
 Marking stays locked until the previous stages are confirmed.
@@ -79,7 +79,7 @@ Create initial pages/routes for:
 
 For the marking workspace, uAssessmAssessmentssmocked chemistry exam data and implement the UI state for:
 
-Segmentation -> Interpretation -> Marking
+Interpretation -> Segmentation -> Marking
 
 Marking should remain disabled until Interpretation is confirmed.
 
@@ -146,7 +146,7 @@ The key product behaviour to prove is:
 - Teacher can open one class.
 - Teacher can open one assessment.
 - Teacher can review Question 1 by student.
-- Teacher sees segmentation, interpretation, and marking stages.
+- Teacher sees interpretation, segmentation, and marking stages.
 - Marking is locked until interpretation is confirmed.
 - Teacher can confirm or override.
 - Teacher can move to the next student.
